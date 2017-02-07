@@ -7,22 +7,25 @@
 # Description : A system for downloading files from any teacher's website
 #                in any subject on NTNU Gjøvik specifically.
 
-	# No touchy
-logbase=
-logtemp=~/wopsys/wopsys_temp.log 
+root=~/wopsys
+
+	# CONFIG - NO TOUCHY
+logurl=https://raw.githubusercontent.com/Arxcis/wopsys/master/wopsys_base.log
+logbase=${root}/wopsys_base.log 
+logfile=${root}/wopsys.log			     	# Logfile - relative path
 
 	# CONFIG
 url=http://www.ansatt.hig.no/erikh/opsys/	# Main repository
-logfile=~/wopsys/wopsys.log			     	# Logfile - relative path
 editor=subl									# Default editor
 
 
-function wopsys () {
+
+
+function wops () {
 
 		# TempSTRINGS
 	filename=		  		
 	searchstring=
-
 
 		# STANDARD UNIX COMMAND INTERPRETING SWITCH
 	while [ $# -gt 0 ]
@@ -42,7 +45,7 @@ function wopsys () {
 
 			-s) searchstring=$2;
 
-			    echo -e "\nSearching DB...\n";
+			    echo -e "\nSearching DB...";
 			    grep ${searchstring} ${logfile} -n
 			    break;;
 
@@ -55,7 +58,16 @@ function wopsys () {
 			-u) 
 				echo -e "\nUpdating file DB";
 
-				curl 
+				curl ${logurl} > ${logbase};
+ 					# Syncing local with temp base log
+				sort ${logfile} ${logbase} | uniq > ${logfile};
+
+				git -C ${root}/ add ${logbase};
+				git -C ${root}/ commit -m "Updating ${logbase}";
+				git -C ${root}/ push origin master;
+
+				rm -rf ${logbase};			
+				break;;
 
             -*) echo -e "\nCommand not handled"; break;;
 
@@ -65,7 +77,7 @@ function wopsys () {
 				${editor} ${filename};
 				break;;  			 # Terminate while loop
 				
-			*) echo -e "\nNothing happened.." 
+			*) echo "Printing root ${root}";
 			   break;;
 		esac
 		shift
