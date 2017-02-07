@@ -1,5 +1,5 @@
 
-local/
+localtemp/
 	# macosSierra
 *.DS_Store
 .AppleDouble
