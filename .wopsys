@@ -12,10 +12,7 @@
 root=~/wopsys
 
 	# CONFIG - NO TOUCHY
-logurl=https://raw.githubusercontent.com/Arxcis/wopsys/master/wopsys_base.log
-logbase=${root}/wopsys_base.log 
 logfile=${root}/wopsys.log			     	# Logfile - relative path
-logtemp=${root}/temp.log
 
 	# CONFIG
 url=http://www.ansatt.hig.no/erikh/opsys/	# Main repository
@@ -68,19 +65,12 @@ function wops () {
 					# Jump to git repo
 				echo "Jumped to ->" $PWD;
 
-				curl ${logurl} > ${logbase};
 				git pull origin master;
-				 	# Syncing local with temp base log
-				sort ${logfile} ${logbase} | uniq > ${logtemp};
-				cp ${logtemp} ${logfile};
-				mv ${logtemp} ${logbase};
 
 					# Commit if changes happen
 				git add ${logbase};
 				git commit -m "Updating ${logbase}";
 				git push origin master;	
-
-				rm -rf ${logbase};
 
 					# Back to working directory
 				cd $currentdir;
