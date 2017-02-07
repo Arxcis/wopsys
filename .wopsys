@@ -56,26 +56,29 @@ function wops () {
 					 "   -p to print file\n" \
 					 "   -h to help\n";;
 
+					 # BIIIG UPDATE PROCEDURE
 			-u) 
 				echo -e "\nUpdating file DB";
 
-				# curl ${logurl} > ${logbase};
- 				# 	# Syncing local with temp base log
-				# sort ${logfile} ${logbase} | uniq > ${logfile};
-
 				currentdir=$PWD;
 				cd ${root}/;
-				
-				echo $PWD;
-				echo $root; 
-				echo $currentdir;
-				#git add ${logbase};
-				#git commit -m "Updating ${logbase}";
-				#git push origin master;	
 
-				#rm -rf ${logbase};	
+				echo "Jumped to ->" $PWD;
+
+				git pull origin master;
+				 	# 	# Syncing local with temp base log
+				sort ${logfile} ${logbase} | uniq > ${logtemp};
+				cp ${logtemp} ${logfile};
+				mv ${logtemp} ${logbase};
+
+					# Commit if changes happen
+				git add ${logbase};
+				git commit -m "Updating ${logbase}";
+				git push origin master;	
 
 				cd $currentdir;
+
+				echo $PWD "<- Back to";
 
 				break;;
 
