@@ -2,6 +2,8 @@ demo-c11-stdthread-atomic.c
 demo-stdthread-atomic-TL.cpp
 incdec.c
 3-en-producer-consumer-mutex-og-condvar.c
-eksempel/eks_25.cpp
+eks_25.cpp
 eks_26.cpp
 eks_24.cpp
+eks_22.cpp
+eks_23.cpp
