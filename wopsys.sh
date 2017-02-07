@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# File        : .wopsys
+# File        : wopsys.sh
 # Date        : 07.02.17
 # Author      : Jonas J. Solsvik
 # Email       : jonasjso@stud.ntnu.no 
