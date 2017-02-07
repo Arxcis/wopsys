@@ -1,0 +1,5 @@
+
+	# macosSierra
+*.DS_Store
+.AppleDouble
+.LSOverride
