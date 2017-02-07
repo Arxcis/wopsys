@@ -7,18 +7,19 @@
 # Description : A system for downloading files from any teacher's website
 #                in any subject on NTNU Gjøvik specifically.
 
+
+
 root=~/wopsys
 
 	# CONFIG - NO TOUCHY
 logurl=https://raw.githubusercontent.com/Arxcis/wopsys/master/wopsys_base.log
 logbase=${root}/wopsys_base.log 
 logfile=${root}/wopsys.log			     	# Logfile - relative path
+logtemp=${root}/temp.log
 
 	# CONFIG
 url=http://www.ansatt.hig.no/erikh/opsys/	# Main repository
 editor=subl									# Default editor
-
-
 
 
 function wops () {
@@ -56,17 +57,20 @@ function wops () {
 					 "   -p to print file\n" \
 					 "   -h to help\n";;
 
-					 # BIIIG UPDATE PROCEDURE
-			-u) 
+
+					 # BIIIG UPDATE-PROCEDURE
+			-update) 
 				echo -e "\nUpdating file DB";
 
 				currentdir=$PWD;
 				cd ${root}/;
 
+					# Jump to git repo
 				echo "Jumped to ->" $PWD;
 
+				curl ${logurl} > ${logbase};
 				git pull origin master;
-				 	# 	# Syncing local with temp base log
+				 	# Syncing local with temp base log
 				sort ${logfile} ${logbase} | uniq > ${logtemp};
 				cp ${logtemp} ${logfile};
 				mv ${logtemp} ${logbase};
@@ -76,10 +80,11 @@ function wops () {
 				git commit -m "Updating ${logbase}";
 				git push origin master;	
 
+				rm -rf ${logbase};
+
+					# Back to working directory
 				cd $currentdir;
-
 				echo $PWD "<- Back to";
-
 				break;;
 
             -*) echo -e "\nCommand not handled"; break;;
