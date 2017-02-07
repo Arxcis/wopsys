@@ -26,6 +26,7 @@ function wops () {
 		# TempSTRINGS
 	filename=		  		
 	searchstring=
+	currentdir=
 
 		# STANDARD UNIX COMMAND INTERPRETING SWITCH
 	while [ $# -gt 0 ]
@@ -58,15 +59,24 @@ function wops () {
 			-u) 
 				echo -e "\nUpdating file DB";
 
-				curl ${logurl} > ${logbase};
- 					# Syncing local with temp base log
-				sort ${logfile} ${logbase} | uniq > ${logfile};
+				# curl ${logurl} > ${logbase};
+ 				# 	# Syncing local with temp base log
+				# sort ${logfile} ${logbase} | uniq > ${logfile};
 
-				git -C ${root}/ add ${logbase};
-				git -C ${root}/ commit -m "Updating ${logbase}";
-				git -C ${root}/ push origin master;
+				currentdir=$PWD;
+				cd ${root}/;
+				
+				echo $PWD;
+				echo $root; 
+				echo $currentdir;
+				#git add ${logbase};
+				#git commit -m "Updating ${logbase}";
+				#git push origin master;	
 
-				rm -rf ${logbase};			
+				#rm -rf ${logbase};	
+
+				cd $currentdir;
+
 				break;;
 
             -*) echo -e "\nCommand not handled"; break;;
