@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# File        : .wopsys
+# Date        : 07.02.17
+# Author      : Jonas J. Solsvik
+# Email       : jonasjso@stud.ntnu.no 
+# Description : A system for downloading files from any teacher's website
+#                in any subject on NTNU Gjøvik specifically.
+
+
+# CONFIG
+
+url=http://www.ansatt.hig.no/erikh/opsys/	# Main repository
+logfile=~/wopsys/wopsys_log	 				# Logfile
+editor=subl									# Default editor
+
+
+function wopsys () {
+
+		# STRINGS
+	url=http://www.ansatt.hig.no/erikh/opsys/
+	logfile=~/wopsys/wopsys_log	 # Log storing history
+	filename=		  		 # Default filename is the first argument
+	searchstring=
+
+		# FLAGS
+	pflag=0
+	fflag=0
+	lflag=0
+	sflag=0
+
+		# STANDARD UNIX COMMAND INTERPRETING SWITCH
+	while [ $# -gt 0 ]
+	do 
+		case "$1" in 
+			-f) filename=$2;
+				fflag=1;
+				curl ${url}${filename} > ${filename} 
+				shift;;
+
+			-p) filename=$2;  # Shift because consume two arguments
+				pflag=1;
+				curl ${url}${filename};
+				shift;; 
+
+			-l) lflag=1;
+				cat ${logfile};
+				break;;
+
+			-s) sflag=1;
+				searchstring=$2;
+
+			    echo "Searching for history...";
+			    grep ${searchstring} ${logfile} -n
+			    break;;
+
+			-h) 
+				echo -e "Valid commands:\n" \
+					 "   [filename] to save file\n" \
+					 "   -p to print file\n" \
+					 "   -h to help\n" break;;
+
+			-u) 
+				echo "Updating file DB" break;;
+
+            -*) echo "Command not handled" break;;
+
+			*.*)  					
+				filename=$1;
+				curl ${url}${filename} > ${filename};
+				${editor} ${filename};
+				break;;  			 # Terminate while loop
+				
+			*) echo "Nothing happened.." 
+			   break;;
+		esac
+		shift
+	done
+
+		# DUMP FILENAME TO HISTORY
+
+		# echo "Filename is:" ${filename}  # debug
+	if [ ! -z ${filename} ]						# If user input filename
+	then
+		if [ ! grep ${filename} ~/.wopsys_log ]	# If filname not exist in history
+		then
+			echo ${filename} >> ${logfile}
+		fi 
+	fi
+
+}
