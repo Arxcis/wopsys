@@ -13,7 +13,7 @@ git pull origin master;
 
 		# Commit if changes happen
 git add $2;
-git commit -m "Updating ${logbase}";
+git commit -m "Updating $2";
 git push origin master;	
 
 		# Back to working directory

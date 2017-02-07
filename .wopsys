@@ -60,7 +60,7 @@ function wops () {
 					 # BIIIG UPDATE-PROCEDURE
 			-update) 
 				echo -e "\nUpdating file DB";
-				nohup ~/wopsys/wupdate.sh ${root} ${logfile} > ${bglog} &
+				nohup ~/wopsys/wupdate.sh ${root} ${logfile} > ${bglog} & # Start background process
 				break;;
 
             -*) echo -e "\nCommand not handled"; break;;
@@ -88,7 +88,7 @@ function wops () {
 		else
 			echo -e "\nAdding " ${filename} " to cache...";
 			echo ${filename} >> ${logfile};
-			nohup wupdate > ${bglog} &
+			nohup ~/wopsys/wupdate.sh ${root} ${logfile} > ${bglog} & # Start background process
 		fi 
 	fi
 

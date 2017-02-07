@@ -2,7 +2,7 @@ Jumped to -> /Users/jsolsvik/wopsys
 From https://github.com/Arxcis/wopsys
  * branch            master     -> FETCH_HEAD
 Already up-to-date.
-[master 7a990b0] Updating
- 1 file changed, 3 insertions(+), 1 deletion(-)
+[master 4d64a7f] Updating /Users/jsolsvik/wopsys/wopsys.log
+ 1 file changed, 1 insertion(+)
 To https://github.com/Arxcis/wopsys
-   e56168a..7a990b0  master -> master
+   5aefc11..4d64a7f  master -> master

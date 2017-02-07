@@ -1,4 +1,5 @@
 
+local/
 	# macosSierra
 *.DS_Store
 .AppleDouble
