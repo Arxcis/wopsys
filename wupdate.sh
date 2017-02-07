@@ -1,11 +1,9 @@
 # !/bin/bash
 
 # $1 = should be $root 
-# $2 = should be $logfile
-
+# $2 = should be $logfile file
 
 cd $1
-
 		# Jump to git repo
 echo "Jumped to ->" $PWD;
 

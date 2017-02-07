@@ -7,13 +7,11 @@
 # Description : A system for downloading files from any teacher's website
 #                in any subject on NTNU Gjøvik specifically.
 
-
-
-root=~/wopsys
+BASE=$(dirname "$0")
 
 	# CONFIG - NO TOUCHY
-logfile=${root}/wopsys.log			     	# Logfile - relative path
-bglog=${root}/bglog.log
+logfile=${BASE}/wopsys.log			     	# Logfile - relative path
+bglog=${BASE}/localtemp/bglog.log
 
 	# CONFIG
 # url=http://www.ansatt.hig.no/erikh/opsys/	# Main repository
@@ -60,7 +58,7 @@ function wops () {
 					 # BIIIG UPDATE-PROCEDURE
 			-update) 
 				echo -e "\nUpdating file DB";
-				nohup ~/wopsys/wupdate.sh ${root} ${logfile} > ${bglog} & # Start background process
+				nohup $BASE/wupdate.sh ${BASE} ${logfile} > ${bglog} & # Start background process
 				break;;
 
             -*) echo -e "\nCommand not handled"; break;;
@@ -71,7 +69,7 @@ function wops () {
 				${editor} ${filename};
 				break;;  			 # Terminate while loop
 				
-			*) echo "Printing root ${root}";
+			*) echo "Printing BASE ${BASE}";
 			   break;;
 		esac
 		shift
@@ -88,7 +86,7 @@ function wops () {
 		else
 			echo -e "\nAdding " ${filename} " to cache...";
 			echo ${filename} >> ${logfile};
-			nohup ~/wopsys/wupdate.sh ${root} ${logfile} > ${bglog} & # Start background process
+			nohup ~/wopsys/wupdate.sh ${BASE} ${logfile} > ${bglog} & # Start background process
 		fi 
 	fi
 
@@ -96,7 +94,7 @@ function wops () {
 
 function wupdate() {
 	currentdir=$PWD; 
-	cd ${root}/;
+	cd ${BASE}/;
 
 		# Jump to git repo
 	echo "Jumped to ->" $PWD;
