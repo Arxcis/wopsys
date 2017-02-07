@@ -4,3 +4,4 @@ incdec.c
 3-en-producer-consumer-mutex-og-condvar.c
 eksempel/eks_25.cpp
 eks_26.cpp
+eks_24.cpp
