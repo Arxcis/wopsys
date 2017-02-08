@@ -14,8 +14,8 @@ logfile=${BASE}/wopsys.log                  # Logfile - relative path
 bglog=${BASE}/localtemp/bglog.log
 
     # CONFIG
-# url=http://www.ansatt.hig.no/erikh/opsys/ # Main repository
-url=http://folk.ntnu.no/frh/ooprog/eksempel/
+url=http://www.ansatt.hig.no/erikh/opsys/ # Main repository
+# url=http://folk.ntnu.no/frh/ooprog/eksempel/
 editor=subl                                 # Default editor
 
 
@@ -24,48 +24,51 @@ function wops () {
         # TempSTRINGS
     filename=               
     searchstring=
+    path=
 
 
         # STANDARD UNIX COMMAND INTERPRETING SWITCH
     while [ $# -gt 0 ]
     do 
         case "$1" in 
-            -f) filename=$2;
-                curl ${url}${filename} > ${filename} 
-                shift;;
+            -o) filename=$2;
+                curl ${url}${filename} > ${filename};
+                ${editor} ${filename};
+                break;;
 
             -p) filename=$2;  # Shift because consume two arguments
                 curl ${url}${filename};
                 shift;; 
 
-            -l) echo -e "\nKnown files:";
+            -l) echo -e "Known files:";
                 grep "" ${logfile} -n;
                 break;;
 
             -s) searchstring=$2;
 
-                echo -e "\nSearching DB...";
-                grep ${searchstring} ${logfile} -n
+                echo -e "Searching DB...";
+                grep ${searchstring} ${logfile} -n;
                 break;;
 
             -h) 
                 whelp
                 break;;
 
-
                      # BIIIG UPDATE-PROCEDURE
             -update) 
-                echo -e "\nUpdating file DB";
+                echo -e "Updating file DB";
                 wupdate # Start foreground updating
                 break;;
 
-            -*) echo -e "\nCommand not handled"; break;;
 
-            *.*)                    
+            -active)  echo -e  $url;               break;;
+            -*)       echo -e "Command not handled"; break;;
+
+            *.*)                   
                 filename=$1;
                 curl ${url}${filename} > ${filename};
-                ${editor} ${filename};
-                break;;              # Terminate while loop
+                shift;;
+                    # Terminate while loop
                 
             *) echo "Printing BASE ${BASE}";
                break;;
@@ -80,9 +83,9 @@ function wops () {
     then
         if grep ${filename} ${logfile}  # If filname not exist in history
         then
-            echo -e "\n" ${filename} " already exists in cache....";
+            echo -e "" ${filename} " already exists in cache....";
         else
-            echo -e "\nAdding " ${filename} " to cache...";
+            echo -e "Adding " ${filename} " to cache...";
             echo ${filename} >> ${logfile};
             nohup ~/wopsys/wupdate.sh ${BASE} ${logfile} > ${bglog} & # Start background updating
         fi 
@@ -113,12 +116,13 @@ function whelp() {
     echo -e \
     "\nValid commands:\n" \
      "-------------------\n" \
-     "       [filename]               - open file in default editor\n" \
-     "        -f [filename] ([path])  - just save file\n" \
-     "        -p [filename]           - print file\n" \
-     "        -h                      - help\n" \
-     "        -s [word]               - search for a file in log\n"\
-     "        -l                      - list all files in log\n" \
-     "        -update                 - update repository\n"\
+     "       [filepath]        - save file to given path\n" \
+     "        -o [filepath]    - open file in default editor\n" \
+     "        -p [filename]    - print file\n" \
+     "        -h               - help\n" \
+     "        -s [word]        - search for a file in log\n"\
+     "        -l               - list all files in log\n" \
+     "        -update          - update repository\n"\
+     "        -active          - print active repository"\
 
 }
