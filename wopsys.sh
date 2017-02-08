@@ -61,7 +61,8 @@ function wops () {
                 break;;
 
 
-            -active)  echo -e  $url;               break;;
+            -remote)  echo -e  $url;                 break;;
+            -editor)  echo -e  $editor;              break;;
             -*)       echo -e "Command not handled"; break;;
 
             *.*)                   
@@ -79,7 +80,7 @@ function wops () {
         # DUMP FILENAME TO HISTORY
 
         # echo "Filename is:" ${filename}  # debug
-    if [ ! -z ${filename} ]                     # If user input filename
+    if [[ ! -z ${filename} ]]                     # If user input filename
     then
         if grep ${filename} ${logfile}  # If filname not exist in history
         then
@@ -123,6 +124,7 @@ function whelp() {
      "        -s [word]        - search for a file in log\n"\
      "        -l               - list all files in log\n" \
      "        -update          - update repository\n"\
-     "        -active          - print active repository"\
+     "        -remote          - print active repository\n"\
+     "        -editor          - print active editor\n"\
 
 }
